@@ -37,10 +37,8 @@ const signUp = async (req, res) => {
       message: "User created successfully",
       token,
       user: {
-        id: user._id, 
         name: user.name,
         email: user.email,
-        role: user.role,
         // specifying the fields i want as i do not want password exposed even though it is hashed.
       },
     });
@@ -79,10 +77,8 @@ const logIn = async (req, res) => {
       message: "Login successful",
       token,
       user: {
-        id: user._id,
         name: user.name,
-        email: user.email,
-        role: user.role,
+        email: user.email
         // specifying the fields i want as i do not want password exposed even though it is hashed.
       },
     });
