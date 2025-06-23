@@ -5,10 +5,10 @@
     "description": "A site where ads are posted and looked at ",
     "version": "1.0.0"
   },
-  "host": "localhost:5501",
+  "host": "https://advertisementapp.onrender.com",
   "basePath": "/",
   "schemes": [
-    "http"
+    "https"
   ],
   "paths": {
     "/api/health": {

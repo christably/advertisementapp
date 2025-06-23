@@ -5,8 +5,8 @@ const doc = {
     title: "Advertisement App",
     description: "A site where ads are posted and looked at ",
   },
-  host: "localhost:5501",
-  schemes: ["http"],
+  host: "https://advertisementapp.onrender.com",
+  schemes: ["https"],
 };
 const outputFile = "./swagger-output.json";
 const routes = ["./server.js"];
