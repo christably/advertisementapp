@@ -25,7 +25,13 @@ const auth = async (req, res, next) => {
     }
 
    
-    req.user = user; 
+    req.user = {
+      userId: user._id,   
+      role: user.role,
+      name: user.name,
+      email: user.email,
+    };
+    
     // this attaches the user info to the request so other functions can access it
     next(); 
     // moves to the next middleware or route handler

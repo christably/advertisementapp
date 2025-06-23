@@ -41,4 +41,38 @@ const sendPasswordResetMail = async(email, resetToken) => {
     await transporter.sendMail(mailOptions);
 };
 
-module.exports = {sendVerificationMail, sendPasswordResetMail}; 
+const sendEmail = async (to, subject, text, html) => {
+      try {
+        const transporter = nodemailer.createTransport({
+          host: "smtp.gmail.com",
+          port: 465,
+          secure: true,
+          auth: {
+            user:process.env.EMAIL_USER,
+            pass:process.env.EMAIL_PASS 
+          },
+        });
+        const mailOptions = {
+          from:  process.env.EMAIL_USER,
+          to,
+          subject,
+          text,
+          html,
+        };
+        const info = await transporter.sendMail(mailOptions);
+        console.log("Email sent", info.messageId);
+        return {
+          success: true,
+          messageId: info.messageId,
+        };
+      } catch (error) {
+        console.log("Email failed to send", error);
+        return {
+          success: false,
+          error: error,
+        };
+      }
+    };
+
+
+module.exports = {sendVerificationMail, sendPasswordResetMail,sendEmail}; 

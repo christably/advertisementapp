@@ -92,6 +92,11 @@ const createAdvert = async (req, res) => {
       advert,
     });
   } catch (error) {
+    if (req.file) {
+      fs.unlink(req.file.path, (err) => {
+        if (err) console.error("Failed to delete uploaded file:", err);
+      });
+    }
     res.status(500).json({
       message: "Internal server error",
       error: error.message, 
@@ -109,9 +114,8 @@ const updateAdvert = async (req, res) => {
         message: "Advert not found",
       });
     }
-    if (advert.vendor.toString() !== req.user.userId) {
+    if (advert.vendor.toString() !== req.user.userId.toString()){
       return res.status(403).json({
-        
         message: "Not authorized",
       });
     }
@@ -139,6 +143,11 @@ const updateAdvert = async (req, res) => {
       advert: updatedAdvert,
     });
   } catch (error) {
+    if (req.file) {
+      fs.unlink(req.file.path, (err) => {
+        if (err) console.error("Failed to delete uploaded file:", err);
+      });
+    }
     res.status(500).json({
       message: "Internal server error",
       error: error.message, 
@@ -155,7 +164,7 @@ const deleteAdvert = async (req, res) => {
         message: "Advert not found",
       });
     }
-    if (advert.vendor.toString() !== req.user.userId) {
+    if (advert.vendor.toString() !== req.user.userId.toString()) {
       return res.status(403).json({
         message: "Not authorized",
       });
