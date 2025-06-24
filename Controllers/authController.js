@@ -1,7 +1,7 @@
 const bcrypt = require("bcryptjs");
 const User = require("../Models/users");
 const { generateToken } = require("../Config/jwtConfig");
-const sendEmail = require('../Utilities/email');
+const {sendEmail} = require('../Utilities/email');
 
 // Creating an account
 const signUp = async (req, res) => {
@@ -62,6 +62,7 @@ const signUp = async (req, res) => {
       user: {
         name: user.name,
         email: user.email,
+        role:user.role
         // specifying the fields i want as i do not want password exposed even though it is hashed.
       },
     });
@@ -98,7 +99,8 @@ const logIn = async (req, res) => {
       token,
       user: {
         name: user.name,
-        email: user.email
+        email: user.email,
+        role:user.role
         // specifying the fields i want as i do not want password exposed even though it is hashed.
       },
     });

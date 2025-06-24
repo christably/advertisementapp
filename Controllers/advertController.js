@@ -109,23 +109,44 @@ const updateAdvert = async (req, res) => {
   try {
     const { title, description, price, category } = req.body;
     const advert = await Advert.findById(req.params.id);
+    
     if (!advert) {
       return res.status(404).json({
         message: "Advert not found",
       });
     }
-    if (advert.vendor.toString() !== req.user.userId.toString()){
+    
+    // make sure only the vendor who created this ad can edit it
+    if (advert.vendor.toString() !== req.user.userId.toString()) {
       return res.status(403).json({
         message: "Not authorized",
       });
     }
+ 
+    // keep the old image by default
     let imageUrl = advert.image;
+    
+    // if a new image is uploaded, handle the swap
     if (req.file) {
+      // delete the old image from cloudinary first to avoid clutter
+      if (advert.image) {
+        try {
+          // extract the public_id from the cloudinary url so it is deleted
+          const oldPublicId = advert.image.split('/').pop().split('.')[0];
+          await cloudinary.uploader.destroy(`adverts/${oldPublicId}`);
+        } catch (deleteError) {
+          console.error("Failed to delete old image from Cloudinary:", deleteError);
+          // don't stop the whole process if deletion fails, just log it
+        }
+      }
+      // now upload the new image
       const results = await cloudinary.uploader.upload(req.file.path, {
         folder: "adverts",
       });
       imageUrl = results.secure_url;
     }
+ 
+    // update the advert with new info or keep old values if nothing new is provided
     const updatedAdvert = await Advert.findByIdAndUpdate(
       req.params.id,
       {
@@ -135,14 +156,16 @@ const updateAdvert = async (req, res) => {
         category: category || advert.category,
         image: imageUrl,
       },
-      //  new: true } tells MongoDB to return the updated version of the document instead of the old version.
-      { new: true }
+      { new: true } 
+      // return the updated version, not the old one
     ).populate("vendor", "name email");
+ 
     res.json({
       message: "Advert updated successfully",
       advert: updatedAdvert,
     });
   } catch (error) {
+    // clean up the uploaded file if something went wrong
     if (req.file) {
       fs.unlink(req.file.path, (err) => {
         if (err) console.error("Failed to delete uploaded file:", err);
@@ -150,10 +173,13 @@ const updateAdvert = async (req, res) => {
     }
     res.status(500).json({
       message: "Internal server error",
-      error: error.message, 
+      error: error.message,
     });
   }
-};
+ };
+
+
+
 
 // For vendors to delete
 const deleteAdvert = async (req, res) => {
