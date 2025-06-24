@@ -18,6 +18,12 @@ const advertSchema = new mongoose.Schema({
         min: 10 
         // minimum price is 10 - prevents people from posting free or very cheap spam ads
     },
+    currency: {
+        type: String,
+        required: true,
+        enum: ['USD', 'EUR', 'GBP', 'GHS', 'NGN'], 
+        default: 'GHS' 
+      },
     category: {
         type: String,
         required: true
