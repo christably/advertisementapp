@@ -165,6 +165,12 @@
                 },
                 "category": {
                   "example": "any"
+                },
+                "condition": {
+                  "example": "any"
+                },
+                "available": {
+                  "example": "any"
                 }
               }
             }
@@ -268,6 +274,12 @@
                   "example": "any"
                 },
                 "category": {
+                  "example": "any"
+                },
+                "condition": {
+                  "example": "any"
+                },
+                "available": {
                   "example": "any"
                 }
               }

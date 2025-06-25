@@ -25,7 +25,7 @@ const advertSchema = new mongoose.Schema({
     condition: {
         type: String,
         required: true,
-        enum: ['New', 'Like New', 'Good', 'Fair', 'Poor']
+        enum: ['new','like-new', 'good', 'fair', 'poor']
         // predefined condition options to maintain consistency
     },
     available: {
