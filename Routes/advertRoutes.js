@@ -9,12 +9,14 @@ const router = express.Router();
 // endpoint for getting all the ads - anyone can view ads (no authentication needed)
 router.get('/', getAllAdverts);
 
-// endpoint to get a single ad by its ID - anyone can view a specific ad
-router.get('/:id', getAdvertById);
-
 // // endpoint for vendors to get their own ads only
 // auth checks if logged in, vendorAuth checks if vendor, then get their ads
 router.get('/my-ads', auth, vendorAuth, getVendorAdverts);
+
+
+
+// endpoint to get a single ad by its ID - anyone can view a specific ad
+router.get('/:id', getAdvertById);
 
 
 // endpoint for vendors only as they are the only ones with permission to post
