@@ -22,6 +22,17 @@ const advertSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    condition: {
+        type: String,
+        required: true,
+        enum: ['New', 'Like New', 'Good', 'Fair', 'Poor']
+        // predefined condition options to maintain consistency
+    },
+    available: {
+        type: Boolean,
+        default: true
+        // indicates if the item is still available for purchase - defaults to true when advert is created
+    },
     image: {
         type: String,
         // Stores the URL/path to the advertisement's image (not the actual image file)
