@@ -19,6 +19,48 @@ router.get('/my-ads', auth, vendorAuth, getVendorAdverts);
 router.get('/:id', getAdvertById);
 
 
+/**
+ * @swagger
+ * /adverts:
+ *   post:
+ *     summary: Create a new advert
+ *     tags:
+ *       - Adverts
+ *     consumes:
+ *       - multipart/form-data
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 example: "Modern Apartment"
+ *               description:
+ *                 type: string
+ *                 example: "2-bedroom apartment in the city center"
+ *               price:
+ *                 type: number
+ *                 example: 1200
+ *               category:
+ *                 type: string
+ *                 example: "Real Estate"
+ *               image:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       201:
+ *         description: Advert created successfully
+ *       400:
+ *         description: Validation error
+ *       500:
+ *         description: Internal server error
+ */
+router.post('/', auth, vendorAuth, upload.single('image'), validateAdvert, createAdvert);
+
+
 // endpoint for vendors only as they are the only ones with permission to post
 // middleware runs in order: auth (check if logged in) → vendorAuth (check if vendor) → upload (handle image) → validateAdvert (check data) → createAdvert (actually create)
 router.post('/', auth, vendorAuth, upload.single('image'), validateAdvert, createAdvert);
