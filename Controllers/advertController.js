@@ -109,6 +109,8 @@ const createAdvert = async (req, res) => {
       description,
       price: Number(price),
       category,
+      condition,
+      available,
       image: imageUrl,
       vendor: req.user.userId,
     });
