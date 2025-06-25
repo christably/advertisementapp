@@ -43,6 +43,33 @@ const getAllAdverts = async (req, res) => {
   }
 };
 
+// get by vendor's id
+const getVendorAdverts = async (req, res) => {
+  try {
+    // Get the vendor's ID from the authenticated user
+    const vendorId = req.user.userId;
+    
+    // Find all adverts belonging to this vendor
+    const adverts = await Advert.find({ vendor: vendorId })
+      .populate("vendor", "name email")
+      .sort({ createdAt: -1 }); // Most recent first
+    
+    // Return count and adverts for better UX
+    res.json({ 
+      count: adverts.length,
+      adverts 
+    });
+    
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal server error",
+      error: error.message, 
+    });
+  }
+};
+
+
+
 // get specific adverts
 const getAdvertById = async (req, res) => {
   try {
@@ -213,4 +240,5 @@ module.exports = {
   createAdvert,
   updateAdvert,
   deleteAdvert,
+  getVendorAdverts
 };

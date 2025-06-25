@@ -1,5 +1,5 @@
 const express = require('express');
-const {getAllAdverts, getAdvertById, createAdvert, updateAdvert, deleteAdvert} = require('../Controllers/advertController');
+const {getAllAdverts, getAdvertById, createAdvert, updateAdvert, deleteAdvert, getVendorAdverts} = require('../Controllers/advertController');
 const {auth, vendorAuth} = require('../Middlewares/authMiddleware');
 const {validateAdvert} = require('../Middlewares/validation');
 const upload = require('../Middlewares/upload');
@@ -11,6 +11,11 @@ router.get('/', getAllAdverts);
 
 // endpoint to get a single ad by its ID - anyone can view a specific ad
 router.get('/:id', getAdvertById);
+
+// // endpoint for vendors to get their own ads only
+// auth checks if logged in, vendorAuth checks if vendor, then get their ads
+router.get('/my-ads', auth, vendorAuth, getVendorAdverts);
+
 
 // endpoint for vendors only as they are the only ones with permission to post
 // middleware runs in order: auth (check if logged in) → vendorAuth (check if vendor) → upload (handle image) → validateAdvert (check data) → createAdvert (actually create)
