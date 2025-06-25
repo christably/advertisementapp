@@ -95,7 +95,7 @@ const getAdvertById = async (req, res) => {
 // authorization for only vendors to create adverts
 const createAdvert = async (req, res) => {
   try {
-    const { title, description, price, category } = req.body;
+    const { title, description, price, category,condition,available } = req.body;
     let imageUrl = "";
     // handling image uploads
     if (req.file) {
@@ -136,7 +136,7 @@ const createAdvert = async (req, res) => {
 // Authorization for only vendors to edit adverts
 const updateAdvert = async (req, res) => {
   try {
-    const { title, description, price, category } = req.body;
+    const { title, description, price, category,condition,available } = req.body;
     const advert = await Advert.findById(req.params.id);
     
     if (!advert) {
@@ -183,7 +183,9 @@ const updateAdvert = async (req, res) => {
         description: description || advert.description,
         price: price ? Number(price) : advert.price,
         category: category || advert.category,
-        image: imageUrl,
+        condition: condition || advert.condition,
+        available: available || advert.available,
+        image: imageUrl
       },
       { new: true } 
       // return the updated version, not the old one

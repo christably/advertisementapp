@@ -42,7 +42,10 @@ const validateAdvert = (req, res, next) => {
         title: Joi.string().min(3).max(100).required(),
         description: Joi.string().required(),
         price: Joi.number().positive().required(),
-        category: Joi.string().required()
+        category: Joi.string().required(),
+        condition: Joi.string().required(),
+        available: Joi.boolean().required()
+
        
     });
     

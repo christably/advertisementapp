@@ -19,9 +19,6 @@ router.get('/my-ads', auth, vendorAuth, getVendorAdverts);
 router.get('/:id', getAdvertById);
 
 
-router.post('/', auth, vendorAuth, upload.single('image'), validateAdvert, createAdvert);
-
-
 // endpoint for vendors only as they are the only ones with permission to post
 // middleware runs in order: auth (check if logged in) → vendorAuth (check if vendor) → upload (handle image) → validateAdvert (check data) → createAdvert (actually create)
 router.post('/', auth, vendorAuth, upload.single('image'), validateAdvert, createAdvert);
