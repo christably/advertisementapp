@@ -44,7 +44,7 @@ const validateAdvert = (req, res, next) => {
         price: Joi.number().positive().required(),
         category: Joi.string().required(),
         condition: Joi.string().required(),
-        available: Joi.boolean().required()
+        available: Joi.boolean().truthy('true').falsy('false').required()
 
        
     });

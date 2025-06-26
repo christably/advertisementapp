@@ -1,5 +1,6 @@
 const Advert = require("../Models/adverts");
 const cloudinary = require("../Config/cloudinaryConfiq");
+const fs = require('fs');
 
 // users getting adverts by searching or filtering
 const getAllAdverts = async (req, res) => {
@@ -8,7 +9,7 @@ const getAllAdverts = async (req, res) => {
     const { search, category, minPrice, maxPrice } = req.query;
     // this gets the search options from the url
     // the below will store the filter objects
-    let filter = {};
+    let filter = { available: true }; 
     if (search) {
       //the user must search using title or description
       filter.$or = [
@@ -110,7 +111,7 @@ const createAdvert = async (req, res) => {
       price: Number(price),
       category,
       condition,
-      available,
+      available: available === 'true' || available === true,
       image: imageUrl,
       vendor: req.user.userId,
     });
@@ -179,13 +180,13 @@ const updateAdvert = async (req, res) => {
     const updatedAdvert = await Advert.findByIdAndUpdate(
       req.params.id,
       {
-        title: title || advert.title,
-        description: description || advert.description,
-        price: price ? Number(price) : advert.price,
-        category: category || advert.category,
-        condition: condition || advert.condition,
-        available: available || advert.available,
-        image: imageUrl
+        title,
+        description,
+        price: Number(price),
+        category,
+        condition,
+        available: available === 'true' || available === true, 
+        image: imageUrl,
       },
       { new: true } 
       // return the updated version, not the old one
